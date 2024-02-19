@@ -2,11 +2,19 @@ package conta.model;
 
 public class Conta {
 	private int agencia = 0;
-	private int conta = 0;
+	private int numero = 0;
 	private int tipo = 0;
 	private String titular = "";
 	private float saldo = 0f;
-	
+
+	public Conta(int agencia, int conta, int tipo, String titular, float saldo) {
+		this.agencia = agencia;
+		this.numero = conta;
+		this.tipo = tipo;
+		this.titular = titular;
+		this.saldo = saldo;
+	}
+
 	public int getAgencia() {
 		return agencia;
 	}
@@ -16,11 +24,11 @@ public class Conta {
 	}
 	
 	public int getConta() {
-		return conta;
+		return numero;
 	}
 	
 	public void setConta(int conta) {
-		this.conta = conta;
+		this.numero = conta;
 	}
 	
 	public int getTipo() {
@@ -45,5 +53,38 @@ public class Conta {
 	
 	public void setSaldo(float saldo) {
 		this.saldo = saldo;
+	}
+	
+	public boolean sacar(float valor) {
+		if(saldo < valor) {
+			return false;
+		}
+		
+		setSaldo(saldo - valor);
+		return true;
+	}
+	
+	public void depositar(float valor) {
+		setSaldo(getSaldo() + valor);
+	}
+	
+	public void dadosConta() {
+		String tipoConta = "";
+		
+		switch (tipo) {
+		case 1:
+			tipoConta = "Corrente";
+			break;
+		case 2:
+			tipoConta = "Poupança";
+			break;
+		}
+		
+		System.out.println("Exibindo dados da conta de " + titular);
+		System.out.println("Número da Agência: " + agencia);
+		System.out.println("Número da Conta: " + numero);
+		System.out.println("Tipo da Conta: " + tipoConta);
+		System.out.println("Nome do Titular: " + titular);
+		System.out.printf("Saldo: R$%.2f\n", saldo);
 	}
 }

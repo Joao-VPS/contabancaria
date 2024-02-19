@@ -7,19 +7,29 @@ import conta.util.Cores;
 public class Menu {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
-		Conta conta1 = new Conta();
+		Conta conta1 = new Conta(123, 12345, 1, "User", 10000f);
 
 		boolean running = true;
 		
 		while (running) {
 			System.out.println("========== BANCO ==========");
 			System.out.println("Selecione uma das opções abaixo para continuar:");
-			System.out.println("1 - Cadastrar conta");
-			System.out.println("2 - Acessar conta");
+			System.out.println("1 - Ver dados da conta");
+			System.out.println("2 - Atualizar conta");
+			System.out.println("3 - Sacar");
+			System.out.println("4 - Depositar");
+			System.out.print("Digite uma opção: ");
 			String userInput = input.nextLine();
+			
+			System.out.println();
 			
 			switch (userInput) {
 			case "1":
+				conta1.dadosConta();
+				System.out.println("Aperte [ENTER] para continuar.");
+				break;
+				
+			case "2":
 				System.out.println("Digite o número da Agência: ");
 				conta1.setAgencia(input.nextInt());
 				System.out.println("Digite o número da Conta: ");
@@ -32,18 +42,34 @@ public class Menu {
 				System.out.println("Digite o valor da Conta: ");
 				conta1.setSaldo(input.nextFloat());
 				break;
-			case "2":
 				
-				System.out.println("Exibindo dados da conta de " + conta1.getTitular());
-				System.out.println("Número da Agência: " + conta1.getAgencia());
-				System.out.println("Número da Conta: " + conta1.getConta());
-				System.out.println("Tipo da Conta: " + conta1.getTipo());
-				System.out.println("Nome do Titular: " + conta1.getTitular());
-				System.out.printf("Saldo: R$%.2d", conta1.getSaldo());
+			case "3":
+				System.out.println("Digite um valor:");
+				float valorSaque = input.nextFloat();
+				
+				if (conta1.sacar(valorSaque)) {
+					System.out.printf("Saque efetuado com sucesso. Novo saldo é de R$%.2f", conta1.getSaldo());
+				} else {
+					System.err.println("Você não tem saldo suficiente. Tente outro valor!");
+				}
 				break;
+				
+			case "4":
+				System.out.println("Digite um valor");
+				float valorDeposito = input.nextFloat();
+				
+				conta1.depositar(valorDeposito);
+				System.out.printf("O valor de R$%.2f foi adicionado à sua conta. Seu saldo agora é de R$%.2f", valorDeposito, conta1.getSaldo());
+				System.out.println();
+				break;
+				
 			default:
 				System.err.println("Opção inválida!");
 			}
+			
+			if (input.hasNextLine()) input.nextLine();
+			
+			System.out.println();
 		}
 	}
 }
