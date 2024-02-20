@@ -2,12 +2,13 @@ package conta;
 
 import java.util.Scanner;
 import conta.model.Conta;
+import conta.model.ContaCorrente;
 import conta.util.Cores;
 
 public class Menu {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
-		Conta conta1 = new Conta(123, 12345, 1, "User", 10000f);
+		Conta conta1 = new ContaCorrente(123, 12345, "User", 10000f, 100);
 
 		boolean running = true;
 		
