@@ -68,7 +68,7 @@ public abstract class Conta {
 		setSaldo(getSaldo() + valor);
 	}
 	
-	public void dadosConta() {
+	public void visualizar() {
 		String tipoConta = "";
 		
 		switch (tipo) {
