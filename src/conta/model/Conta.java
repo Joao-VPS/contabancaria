@@ -1,13 +1,19 @@
 package conta.model;
 
+import conta.util.Cores;
+import conta.util.Strings;
+
 public abstract class Conta {
+	static byte CONTA_CORRENTE = 1;
+	static byte CONTA_POUPANCA = 2;
+
 	private int agencia;
 	private int numero;
-	private int tipo;
+	private byte tipo;
 	private String titular;
 	private float saldo;
 
-	public Conta(int agencia, int conta, int tipo, String titular, float saldo) {
+	public Conta(int agencia, int conta, byte tipo, String titular, float saldo) {
 		this.agencia = agencia;
 		this.numero = conta;
 		this.tipo = tipo;
@@ -18,73 +24,87 @@ public abstract class Conta {
 	public int getAgencia() {
 		return agencia;
 	}
-	
+
 	public void setAgencia(int agencia) {
 		this.agencia = agencia;
 	}
-	
-	public int getConta() {
+
+	public int getNumero() {
 		return numero;
 	}
-	
-	public void setConta(int conta) {
+
+	public void setNumero(int conta) {
 		this.numero = conta;
 	}
-	
+
 	public int getTipo() {
 		return tipo;
 	}
-	
-	public void setTipo(int tipo) {
+
+	public void setTipo(byte tipo) {
 		this.tipo = tipo;
 	}
-	
+
 	public String getTitular() {
 		return titular;
 	}
-	
+
 	public void setTitular(String titular) {
 		this.titular = titular;
 	}
-	
+
 	public float getSaldo() {
 		return saldo;
 	}
-	
+
 	public void setSaldo(float saldo) {
 		this.saldo = saldo;
 	}
-	
+
 	public boolean sacar(float valor) {
-		if(saldo < valor) {
+		if (getSaldo() < valor) {
+			System.out.println(Strings.WITHDRAWAL_FAILED);
 			return false;
 		}
-		
-		setSaldo(saldo - valor);
+
+		setSaldo(getSaldo() - valor);
+		System.out.printf(Strings.WITHDRAWAL_SUCCESS, getSaldo());
 		return true;
 	}
-	
+
 	public void depositar(float valor) {
+		System.out.println(Cores.getColorTheme());
+
+		if (valor < 0) {
+			System.out.println(Strings.DEPOSIT_FAILED);
+			return;
+		}
+
 		setSaldo(getSaldo() + valor);
+		System.out.printf(Strings.DEPOSIT_SUCCESS, valor, getSaldo());
 	}
-	
+
 	public void visualizar() {
 		String tipoConta = "";
-		
+
 		switch (tipo) {
 		case 1:
-			tipoConta = "Corrente";
+			tipoConta = Strings.ACCOUNT_TYPE_CURRENT;
 			break;
 		case 2:
-			tipoConta = "Poupança";
+			tipoConta = Strings.ACCOUNT_TYPE_SAVINGS;
 			break;
 		}
-		
-		System.out.println("\033[1mExibindo dados da conta de " + titular + "\033[0m");
-		System.out.println("Número da Agência: " + agencia);
-		System.out.println("Número da Conta: " + numero);
-		System.out.println("Tipo da Conta: " + tipoConta);
-		System.out.println("Nome do Titular: " + titular);
-		System.out.printf("Saldo: R$%.2f\n", saldo);
+
+		System.out.println("*".repeat(30));
+		System.out.println(Cores.TEXT_BOLD + Cores.getColorTheme()
+		+ Strings.ACCOUNT_INFO
+		+ Cores.TEXT_RESET + Cores.getColorTheme());
+		System.out.println("*".repeat(30));
+		System.out.println(Strings.ACCOUNT_INFO_AGENCY + agencia);
+		System.out.println(Strings.ACCOUNT_INFO_NUMBER + numero);
+		System.out.println(Strings.ACCOUNT_INFO_TYPE + tipoConta);
+		System.out.println(Strings.ACCOUNT_INFO_OWNER + titular);
+		System.out.printf(Strings.ACCOUNT_INFO_BALANCE, saldo);
 	}
 }
